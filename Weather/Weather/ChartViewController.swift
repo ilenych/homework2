@@ -9,52 +9,49 @@
 import UIKit
 import Charts
 
-class chartViewController: UIViewController {
+class ChartViewController: UIViewController {
     
-    @IBOutlet weak var chartView: LineChartView!
+    @IBOutlet weak var lineChartView: LineChartView!
+    
+    private let timePeriod = ["Time"]
+    var maxValues = [Int]()
+    var minValues = [Int]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setChart(dataPoints: timePeriod, valuesMax: maxValues, valuesMin: minValues)
-        chartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0, easingOption: .easeInOutSine)
+        
+        lineChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0, easingOption: .easeInOutSine)
     }
-    
-    
-    var array = [1, 4, 7, 9, 5, 7]
-    var y = [0, 10, 20, 30, 40, 50]
-    
-    let timePeriod = ["Time", "1", "2", "3", "2", "3"]
-    let maxValues = [2.0, 6.0, 5.0, 2.0, 0.0, 4.0]
-    let minValues = [-4.0, 0.0, -2.0, -6.0, -10.0, -3.0]
-    
-    
-    
-    func setChart(dataPoints: [String], valuesMax: [Double], valuesMin: [Double]) {
+
+    private func setChart(dataPoints: [String], valuesMax: [Int], valuesMin: [Int]) {
         
         let chartData = LineChartData()
         var lineDataEntry1: [ChartDataEntry] = []
         var lineDataEntry2: [ChartDataEntry] = []
         
         // No data setup
-        chartView.noDataTextColor = UIColor.white
-        chartView.noDataText = "No data for the chart"
-        chartView.backgroundColor = UIColor.white
+        lineChartView.noDataTextColor = UIColor.white
+        lineChartView.noDataText = "No data for the chart"
+        lineChartView.backgroundColor = UIColor.white
         
         // Data point setup
         for i in 0..<valuesMax.count {
-            let valuesMax = ChartDataEntry(x: Double(i), y: valuesMax[i])
+            let valuesMax = ChartDataEntry(x: Double(i), y: Double(valuesMax[i]))
             lineDataEntry1.append(valuesMax)
         }
-        let chartDataSet1 = LineChartDataSet(entries: lineDataEntry1, label: "max")
+        
+        let chartDataSet1 = LineChartDataSet(entries: lineDataEntry1, label: "Temperature")
         chartData.addDataSet(chartDataSet1)
         
         
         for i in 0..<valuesMin.count {
-            let valuesMin = ChartDataEntry(x: Double(i), y: valuesMin[i])
+            let valuesMin = ChartDataEntry(x: Double(i), y: Double(valuesMin[i]))
             lineDataEntry2.append(valuesMin)
         }
-        let chartDataSet2 = LineChartDataSet(entries: lineDataEntry2, label: "min")
+        
+        let chartDataSet2 = LineChartDataSet(entries: lineDataEntry2, label: "Apparent temperature")
         chartData.addDataSet(chartDataSet2)
         
         // Color config
@@ -66,27 +63,33 @@ class chartViewController: UIViewController {
         gradientFill(chartDataSet: chartDataSet1, gradient: UIColor.red.cgColor)
         gradientFill(chartDataSet: chartDataSet2, gradient: UIColor.green.cgColor)
         
-        chartView.data = chartData
-        chartView.xAxis.labelPosition = .bottom
-        chartView.xAxis.drawGridLinesEnabled = true
-        chartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: dataPoints)
-        chartView.legend.enabled = true
-        chartView.chartDescription?.enabled = false
-        chartView.rightAxis.enabled = false
-        chartView.leftAxis.drawGridLinesEnabled = true
-        chartView.leftAxis.drawLabelsEnabled = true
-        chartView.xAxis.avoidFirstLastClippingEnabled = true
+        // ChartView cinfig
+        lineChartView.data = chartData
+        lineChartView.xAxis.labelPosition = .bottom
+        lineChartView.xAxis.drawGridLinesEnabled = true
+        lineChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: dataPoints)
+        lineChartView.legend.enabled = true
+        lineChartView.chartDescription?.enabled = false
+        lineChartView.rightAxis.enabled = false
+        lineChartView.leftAxis.drawGridLinesEnabled = true
+        lineChartView.leftAxis.drawLabelsEnabled = true
+        lineChartView.xAxis.avoidFirstLastClippingEnabled = true
     }
     
-    func gradientFill(chartDataSet: LineChartDataSet, gradient: CGColor) {
+    private func gradientFill(chartDataSet: LineChartDataSet, gradient: CGColor) {
+        
         let gradientColor = [gradient, UIColor.red.cgColor] as CFArray
         let colorLocation: [CGFloat] = [1.0, 1.0]
-        guard let gradient = CGGradient.init(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: gradientColor, locations: colorLocation) else { print("gradient error"); return }
+        guard let gradient = CGGradient.init(colorsSpace: CGColorSpaceCreateDeviceRGB(),
+                                             colors: gradientColor,
+                                             locations: colorLocation)
+            else { print("gradient error"); return }
         chartDataSet.fill = Fill.fillWithLinearGradient(gradient, angle: 0.0)
         chartDataSet.drawFilledEnabled = true
     }
     
-    func configColorLine(chartDataSet: LineChartDataSet, colors: [UIColor], color: UIColor) {
+    private func configColorLine(chartDataSet: LineChartDataSet, colors: [UIColor], color: UIColor) {
+        
         chartDataSet.colors = colors
         chartDataSet.setCircleColors(color)
         chartDataSet.circleHoleColor = color

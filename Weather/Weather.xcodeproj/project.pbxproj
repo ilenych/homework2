@@ -52,7 +52,6 @@
 				84F96C61A19983EBB60B3734 /* Pods-Weather.debug.xcconfig */,
 				BDA92361C74650EC8C511121 /* Pods-Weather.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
