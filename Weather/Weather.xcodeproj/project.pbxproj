@@ -385,7 +385,7 @@
 		};
 		979B541E22687DB400DDA6C8 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BDA92361C74650EC8C511121 /* Pods-Weather.release.xcconfig */;
+			baseConfigurationReference = 84F96C61A19983EBB60B3734 /* Pods-Weather.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
