@@ -10,6 +10,10 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    @IBOutlet weak var city: UILabel!
+    @IBOutlet weak var button: UIButton!
+    @IBOutlet weak var temperature: UILabel!
+    @IBOutlet weak var apparentTemperature: UILabel!
     
     var hours = [String]()
     var maxTemperature = [Int]()
@@ -18,7 +22,14 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        city.textColor = UIColor.white
+        temperature.textColor = UIColor.white
+        apparentTemperature.textColor = UIColor.white
         
+        button.layer.cornerRadius = 10
+        button.clipsToBounds = true
+        button.layer.borderWidth = 3
+        button.layer.borderColor = UIColor.red.cgColor
     }
     
     @IBAction func chartButton(_ sender: UIButton) {
@@ -42,8 +53,11 @@ class ViewController: UIViewController {
     }
 }
 
+
+
+
 extension ViewController: XMLParserDelegate {
-    
+
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
         if elementName == "FORECAST" {
             let forecast = Forecast()
