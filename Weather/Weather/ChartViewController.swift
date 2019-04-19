@@ -22,7 +22,7 @@ class ChartViewController: UIViewController {
         
         setChart(dataPoints: timePeriod, valuesMax: maxValues, valuesMin: minValues)
         
-        lineChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0, easingOption: .easeInOutSine)
+        lineChartView.animate(xAxisDuration: 0.5, yAxisDuration: 0.5, easingOption: .easeInOutSine)
     }
 
     private func setChart(dataPoints: [String], valuesMax: [Int], valuesMin: [Int]) {
